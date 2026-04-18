@@ -1,0 +1,114 @@
+/* Paleta de colores orgánicos y sostenibles */
+:root {
+    --bg-color: #f9f8f3; /* Beige muy claro */
+    --text-main: #2b3a2a; /* Verde bosque muy oscuro */
+    --text-light: #52634f; /* Verde oliva grisáceo */
+    --accent-color: #d67a47; /* Terracota / Teja */
+    --card-bg: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Hero Section */
+.hero {
+    background-color: var(--text-main);
+    color: var(--bg-color);
+    padding: 80px 0;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.hero h2 {
+    font-size: 1.2rem;
+    color: var(--accent-color);
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    color: #e0e0e0;
+}
+
+/* Portfolio Sections */
+.portfolio-section {
+    margin: 60px 0;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--accent-color);
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.card {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+
+.card h4 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: var(--text-main);
+}
+
+.card p {
+    margin-bottom: 10px;
+    color: var(--text-light);
+}
+
+.portfolio-img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-top: 20px;
+    border: 1px solid #eaeaea;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: var(--text-main);
+    color: var(--bg-color);
+    margin-top: 60px;
+}
+
+footer a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
