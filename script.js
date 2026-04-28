@@ -1,17 +1,14 @@
-// 1. Lógica del Modo Oscuro (Dark Mode Toggle)
+// 1. Lógica del Modo Oscuro
 const themeToggleBtn = document.getElementById("theme-toggle");
 const currentTheme = localStorage.getItem("theme");
 
-// Comprobar si el usuario ya había elegido el modo oscuro antes
 if (currentTheme === "dark") {
   document.documentElement.setAttribute("data-theme", "dark");
   themeToggleBtn.innerText = "☀️ Light Mode";
 }
 
-// Evento al hacer clic en el botón
 themeToggleBtn.addEventListener("click", () => {
   let theme = document.documentElement.getAttribute("data-theme");
-
   if (theme === "dark") {
     document.documentElement.removeAttribute("data-theme");
     localStorage.setItem("theme", "light");
@@ -23,29 +20,69 @@ themeToggleBtn.addEventListener("click", () => {
   }
 });
 
-// 2. Animaciones al hacer Scroll (Intersection Observer)
-const faders = document.querySelectorAll(".fade-in");
+// 2. Animaciones Scrollytelling (Aparición al hacer scroll)
+const scrollyElements = document.querySelectorAll(".scrolly-element");
 
-const appearOptions = {
-  threshold: 0.15, // El elemento aparece cuando el 15% es visible en pantalla
+const observerOptions = {
+  threshold: 0.15, // El bloque aparece cuando asoma el 15% en pantalla
   rootMargin: "0px 0px -50px 0px",
 };
 
-const appearOnScroll = new IntersectionObserver(function (
-  entries,
-  appearOnScroll,
-) {
+const scrollObserver = new IntersectionObserver(function (entries, observer) {
   entries.forEach((entry) => {
-    if (!entry.isIntersecting) {
-      return;
-    } else {
+    if (entry.isIntersecting) {
       entry.target.classList.add("visible");
-      appearOnScroll.unobserve(entry.target); // Deja de observar una vez que ha aparecido
+      observer.unobserve(entry.target);
     }
   });
-},
-appearOptions);
+}, observerOptions);
 
-faders.forEach((fader) => {
-  appearOnScroll.observe(fader);
+scrollyElements.forEach((el) => {
+  scrollObserver.observe(el);
+});
+
+// 3. Efecto Parallax en el Fondo al hacer Scroll
+const parallaxBg = document.getElementById("parallax-bg");
+
+window.addEventListener("scroll", () => {
+  let scrolled = window.scrollY;
+  // Mueve los círculos del fondo a distinta velocidad que la pantalla
+  parallaxBg.style.transform = `translateY(${scrolled * 0.4}px)`;
+});
+
+// Forzar la aparición del Hero Section al cargar la página
+window.addEventListener("DOMContentLoaded", () => {
+  const hero = document.querySelector(".hero.scrolly-element");
+  if (hero) {
+    hero.classList.add("visible");
+  }
+});
+
+// 4. Efecto 3D Tilt Dinámico para las tarjetas
+const tiltCards = document.querySelectorAll(".tilt-card");
+
+tiltCards.forEach((card) => {
+  card.addEventListener("mousemove", (e) => {
+    const rect = card.getBoundingClientRect();
+    // Calcula la posición del ratón en el centro de la tarjeta
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    // Cuanto más alejado del centro, mayor es la rotación (Max 5 grados)
+    const rotateX = ((y - centerY) / centerY) * -5;
+    const rotateY = ((x - centerX) / centerX) * 5;
+
+    // Aplica la rotación a la tarjeta
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    card.style.transition = "transform 0.1s ease-out";
+  });
+
+  // Devuelve la tarjeta a su estado original cuando el ratón se va
+  card.addEventListener("mouseleave", () => {
+    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+    card.style.transition = "transform 0.5s ease-in-out";
+  });
 });

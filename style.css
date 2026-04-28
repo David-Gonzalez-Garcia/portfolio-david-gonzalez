@@ -1,38 +1,271 @@
-/* --- Galería interactiva de Publicaciones (Eco-Brutalismo) --- */
+:root {
+    --bg-color: #f4f7f5; /* Tono muy suave de fondo */
+    --text-main: #1d2d24; /* Verde bosque muy oscuro */
+    --accent-color: #d16b4a; /* Tono teja / arcilla cálido */
+    --card-bg: rgba(255, 255, 255, 0.7); /* Cristal translúcido */
+    --shadow-color: rgba(29, 45, 36, 0.1);
+    --transition-speed: 0.4s;
+}
+
+[data-theme="dark"] {
+    --bg-color: #121815; /* Gris pino muy oscuro */
+    --text-main: #e8f0eb;
+    --accent-color: #e58769;
+    --card-bg: rgba(30, 40, 35, 0.6);
+    --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.7;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+    overflow-x: hidden;
+}
+
+/* Efecto Fondo Parallax Flotante */
+.parallax-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at 15% 50%, var(--accent-color) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, #4a8264 0%, transparent 25%);
+    opacity: 0.08;
+    z-index: -1;
+    transition: transform 0.1s linear;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 25px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Navegación */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+#theme-toggle {
+    background: var(--card-bg);
+    color: var(--text-main);
+    border: 1px solid rgba(150,150,150,0.3);
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+#theme-toggle:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 5px 15px var(--shadow-color);
+}
+
+/* Hero Section */
+.hero {
+    padding: 180px 0 100px 0;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 15px;
+    letter-spacing: -1.5px;
+}
+
+.hero h2 {
+    font-size: 1.4rem;
+    color: var(--accent-color);
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    opacity: 0.9;
+}
+
+/* Tarjetas Glassmorphism y 3D Tilt */
+.portfolio-section {
+    margin: 100px 0;
+    perspective: 1000px; /* Necesario para el efecto 3D */
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.section-title::after {
+    content: "";
+    height: 1px;
+    flex-grow: 1;
+    background-color: var(--text-main);
+    opacity: 0.2;
+}
+
+.glass-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 40px var(--shadow-color);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transform-style: preserve-3d; /* Activa la profundidad 3D de sus elementos hijos */
+    will-change: transform;
+}
+
+.card h4 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    transform: translateZ(30px); /* Empuja el título hacia adelante en 3D */
+}
+
+.card p {
+    margin-bottom: 15px;
+    font-size: 1.05rem;
+    transform: translateZ(15px);
+}
+
+.highlight-text {
+    margin-top: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent-color);
+}
+
+.flickr-btn {
+    display: inline-block; 
+    margin-top: 15px; 
+    padding: 12px 24px; 
+    background-color: var(--accent-color); 
+    color: white; 
+    text-decoration: none; 
+    border-radius: 30px; 
+    font-weight: bold; 
+    transition: all 0.3s ease;
+    transform: translateZ(20px);
+}
+
+.flickr-btn:hover {
+    background-color: #b56247;
+    transform: translateZ(20px) translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* Galería de Portadas e Imágenes (No se deforman) */
 .publications-grid {
     display: flex;
-    gap: 20px;
-    overflow-x: auto; /* Permite hacer scroll horizontal si no caben en pantalla */
-    padding: 20px 5px 30px 5px;
+    gap: 25px;
+    overflow-x: auto;
+    padding: 20px 10px 40px 10px;
     margin-top: 10px;
-    border-top: 2px dashed var(--border-color);
+    scroll-behavior: smooth;
+    transform: translateZ(40px); /* Hace que las fotos floten muy por encima del cristal */
+}
+
+.cover-wrapper {
+    flex: 0 0 auto;
+    width: 180px;  /* Ancho para revistas verticales */
+    height: 260px; /* Alto fijo para revistas */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px var(--shadow-color);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background-color: #fff; 
+}
+
+/* Variante de la caja para recortes de prensa más horizontales */
+.horizontal-wrapper {
+    width: 280px;
+    height: 200px;
 }
 
 .pub-cover {
-    width: 150px;
-    height: auto;
-    border: 3px solid var(--border-color);
-    box-shadow: 6px 6px 0px var(--shadow-color);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* CRUCIAL: Esto evita que la foto se estire, deforme o corte */
+    transition: transform 0.4s ease;
 }
 
-.pub-cover:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 9px 9px 0px var(--shadow-color);
+.cover-wrapper:hover {
+    transform: translateY(-15px) scale(1.05);
+    box-shadow: 0 20px 40px var(--shadow-color);
 }
 
-/* Personalizar la barra de scroll horizontal para que encaje con el diseño */
+/* Scrollbar invisible pero funcional para la galería */
 .publications-grid::-webkit-scrollbar {
-    height: 10px;
+    height: 8px;
 }
-
 .publications-grid::-webkit-scrollbar-track {
-    background: var(--bg-color);
-    border: 1px solid var(--border-color);
+    background: transparent;
+}
+.publications-grid::-webkit-scrollbar-thumb {
+    background: rgba(150,150,150,0.3);
+    border-radius: 10px;
 }
 
-.publications-grid::-webkit-scrollbar-thumb {
-    background: var(--accent-color);
-    border: 1px solid var(--border-color);
+footer {
+    text-align: center;
+    padding: 60px 20px;
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Clases de animación Scrollytelling controladas por JS */
+.scrolly-element {
+    opacity: 0;
+    transform: translateY(80px);
+    transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                transform 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.scrolly-element.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
